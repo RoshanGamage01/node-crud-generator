@@ -1,0 +1,8 @@
+{
+    "tableName": "users",
+    "columns": [
+        { "name": "name", "type": "String" },
+        { "name": "email", "type": "String" },
+        { "name": "age", "type": "Number" }
+    ]
+}
