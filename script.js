@@ -17,7 +17,7 @@ const generateModel = (tableName, columns) => {
         const mongoose = require('mongoose');
         const ${tableName}Schema = new mongoose.Schema({
             ${columns.map(column => `${column.name}: ${column.type}`).join(',\n')}
-        });
+        }, {timestamps: true});
         const ${tableName}Model = mongoose.model('${tableName}', ${tableName}Schema);
         module.exports = ${tableName}Model;
     `;
@@ -143,6 +143,8 @@ const generateController = (tableName) => {
                 }
             }
         }
+
+        module.exports = new ${tableName}Controller();
     `;
     const filePath = path.join(__dirname, `./${tableName}/controllers/${tableName}Controller.js`);
     fs.writeFileSync(filePath, controllerTemplate);

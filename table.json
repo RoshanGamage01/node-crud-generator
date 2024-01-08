@@ -1,8 +1,9 @@
 {
-    "tableName": "users",
+    "tableName": "Country",
     "columns": [
         { "name": "name", "type": "String" },
-        { "name": "email", "type": "String" },
-        { "name": "age", "type": "Number" }
+        { "name": "code", "type": "String" },
+        { "name": "currency", "type": "String" },
+        {"name": "status", "type": "Boolean", "default": "true"}
     ]
 }
