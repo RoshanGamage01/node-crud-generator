@@ -96,6 +96,7 @@ const generateService = (tableName) => {
 const generateController = (tableName) => {
     const controllerTemplate = `
         const ${tableName}Service = require('../services/${tableName}Service');
+        const ${tableName}Model = require('../models/${tableName}');
         
         class ${tableName}Controller {
             async create(req, res) {
@@ -140,6 +141,53 @@ const generateController = (tableName) => {
                     res.status(204).json({});
                 }catch(err){
                     res.status(400).json({ message: err.message });
+                }
+            }
+
+            async getAll(reqm, res) {
+                const page = parseInt(req.body.currentPageIndex) || 1;
+                const filters = req.body.filters || {};
+        
+                const itemsPerPage = req.body.dataPerPage;
+                const skip = (page - 1) * itemsPerPage;
+
+                try{
+                    let query = {}
+
+                    if(filters){
+        
+                    }
+
+                    const items = await ${tableName}Model.find(query)
+                                        .skip(skip)
+                                        .limit(itemsPerPage)
+                                        .sort({'updatedAt' : -1})
+
+                    const totalItems = await ${tableName}Model.countDocuments(query);
+
+                    let response = {}
+
+                    if(items.length === 0){
+                        response = {
+                            data: items,
+                            dataCount: totalItems,
+                            currentPaginationIndex: page,
+                            dataPerPage: itemsPerPage,
+                            message: 'There are not matching records.'
+                        }
+                    }else{
+                        response = {
+                            data: items,
+                            dataCount: totalItems,
+                            currentPaginationIndex: page,
+                            dataPerPage: itemsPerPage,
+                            message: 'Data returned'
+                        }
+                    }
+
+                    res.json(response);
+                }catch(error){
+                    res.status(500).send({error: 'Internal Server Error'})
                 }
             }
         }
